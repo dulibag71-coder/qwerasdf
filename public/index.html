@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golf Club AI - Premium</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;600;800&display=swap" rel="stylesheet">
+    <link rel="manifest" href="/manifest.json">
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #000;
+        }
+
+        .hero-bg {
+            background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.9)), url('https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .input-field {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .input-field:focus {
+            border-color: #10B981;
+            background: rgba(0, 0, 0, 0.6);
+            outline: none;
+        }
+    </style>
+</head>
+
+<body class="text-white min-h-screen hero-bg flex items-center justify-center p-4">
+
+    <div class="glass-card w-full max-w-md rounded-3xl p-8 relative overflow-hidden animate-fade-in">
+        <!-- Logo Area -->
+        <div class="text-center mb-10">
+            <div
+                class="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-800 rounded-2xl mx-auto mb-4 shadow-[0_0_20px_rgba(16,185,129,0.5)] flex items-center justify-center">
+                <span class="text-3xl">⛳</span>
+            </div>
+            <h1 class="text-4xl font-extrabold tracking-tight">GOLF CLUB <span class="text-green-400">AI</span></h1>
+            <p class="text-gray-400 text-sm mt-2 font-light tracking-wide">Premium AI Swing Analysis Platform</p>
+        </div>
+
+        <!-- Login Form -->
+        <div id="loginForm" class="space-y-5">
+            <div>
+                <label class="text-xs text-gray-500 ml-1 mb-1 block">USER ID</label>
+                <input type="text" id="l_username" class="input-field w-full p-4 rounded-xl" placeholder="아이디를 입력하세요">
+            </div>
+            <div>
+                <label class="text-xs text-gray-500 ml-1 mb-1 block">PASSWORD</label>
+                <input type="password" id="l_password" class="input-field w-full p-4 rounded-xl"
+                    placeholder="비밀번호를 입력하세요">
+            </div>
+
+            <button onclick="handleLogin()"
+                class="w-full bg-green-500 hover:bg-green-400 text-black font-bold py-4 rounded-xl shadow-lg shadow-green-500/20 transition transform active:scale-95 mt-4">
+                로그인 / LOGIN
+            </button>
+
+            <div class="flex justify-between items-center mt-6 text-sm">
+                <button onclick="toggleMode()" class="text-gray-400 hover:text-white transition">회원가입</button>
+                <a href="/admin.html" class="text-gray-600 hover:text-gray-400 text-xs">관리자 접근</a>
+            </div>
+        </div>
+
+        <!-- Register Form -->
+        <div id="registerForm" class="space-y-5 hidden">
+            <div>
+                <label class="text-xs text-gray-500 ml-1 mb-1 block">NEW ID</label>
+                <input type="text" id="r_username" class="input-field w-full p-4 rounded-xl" placeholder="사용할 아이디">
+            </div>
+            <div>
+                <label class="text-xs text-gray-500 ml-1 mb-1 block">NICKNAME</label>
+                <input type="text" id="r_nickname" class="input-field w-full p-4 rounded-xl" placeholder="활동 닉네임">
+            </div>
+            <div>
+                <label class="text-xs text-gray-500 ml-1 mb-1 block">PASSWORD</label>
+                <input type="password" id="r_password" class="input-field w-full p-4 rounded-xl" placeholder="비밀번호 설정">
+            </div>
+
+            <button onclick="handleRegister()"
+                class="w-full bg-blue-500 hover:bg-blue-400 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-500/20 transition transform active:scale-95 mt-4">
+                계정 생성 / REGISTER
+            </button>
+
+            <div class="text-center mt-6">
+                <button onclick="toggleMode()" class="text-gray-400 hover:text-white text-sm">로그인으로 돌아가기</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/utils.js"></script>
+    <script>
+        // Same logic as before
+        if ('serviceWorker' in navigator) navigator.serviceWorker.register('/service-worker.js');
+        function toggleMode() {
+            document.getElementById('loginForm').classList.toggle('hidden');
+            document.getElementById('registerForm').classList.toggle('hidden');
+        }
+        async function handleLogin() {
+            const u = document.getElementById('l_username').value;
+            const p = document.getElementById('l_password').value;
+            try {
+                const user = await apiRequest('/login', 'POST', { username: u, password: p });
+                localStorage.setItem('user', JSON.stringify(user));
+                window.location.href = '/club.html';
+            } catch (e) { alert(e.message); }
+        }
+        async function handleRegister() {
+            const u = document.getElementById('r_username').value;
+            const n = document.getElementById('r_nickname').value;
+            const p = document.getElementById('r_password').value;
+            try {
+                await apiRequest('/register', 'POST', { username: u, nickname: n, password: p });
+                alert('가입되었습니다. 로그인해주세요.');
+                toggleMode();
+            } catch (e) { alert(e.message); }
+        }
+    </script>
+</body>
+
+</html>
