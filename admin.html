@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen p-10">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6 text-gray-800">System Admin Dashboard</h1>
+
+        <!-- Login -->
+        <div id="adminLogin" class="bg-white p-6 rounded shadow mb-6">
+            <h2 class="text-xl font-bold mb-4">관리자 로그인</h2>
+            <input type="password" id="adminPass" placeholder="Password" class="border p-2 rounded w-full mb-2">
+            <button onclick="adminLogin()" class="bg-black text-white px-4 py-2 rounded">Login</button>
+        </div>
+
+        <!-- Dashboard (Hidden) -->
+        <div id="adminPanel" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded shadow">
+                <h2 class="text-xl font-bold mb-4 border-b pb-2">결제 승인 대기 목록</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="p-2 border">시각</th>
+                                <th class="p-2 border">동호회</th>
+                                <th class="p-2 border">요청자</th>
+                                <th class="p-2 border">상품</th>
+                                <th class="p-2 border">금액</th>
+                                <th class="p-2 border">액션</th>
+                            </tr>
+                        </thead>
+                        <tbody id="paymentTable">
+                            <!-- JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/utils.js"></script>
+    <script src="/js/admin.js"></script>
+</body>
+
+</html>

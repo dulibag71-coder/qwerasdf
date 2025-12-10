@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Management - Premium</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #0f172a;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #fbbf24, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+
+<body class="text-slate-200 min-h-screen relative overflow-hidden">
+
+    <!-- Background Accents -->
+    <div
+        class="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] bg-green-500/10 rounded-full blur-[100px] pointer-events-none">
+    </div>
+    <div
+        class="fixed bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none">
+    </div>
+
+    <header class="p-6 flex items-center gap-4 relative z-10">
+        <a href="/club.html" class="p-2 rounded-full hover:bg-white/10 transition"><span
+                class="material-icons text-slate-400">arrow_back</span></a>
+        <div>
+            <h1 class="text-2xl font-bold text-white tracking-wide">Club Management</h1>
+            <p class="text-xs text-slate-500">동호회 운영 및 결제 관리</p>
+        </div>
+    </header>
+
+    <main class="p-6 space-y-8 relative z-10 max-w-2xl mx-auto">
+
+        <!-- Invite Code Section -->
+        <div class="glass-panel p-6 rounded-2xl relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-4 opacity-50"><span
+                    class="material-icons text-6xl text-white/5">qr_code</span></div>
+            <h3 class="text-slate-400 text-sm font-medium mb-2 upppercase tracking-wider">INVITE CODE</h3>
+            <div class="flex items-center gap-4">
+                <span id="inviteCodeDisplay"
+                    class="text-4xl font-bold text-white tracking-widest drop-shadow-lg">...</span>
+                <button onclick="copyCode()"
+                    class="flex items-center gap-1 bg-white/10 hover:bg-white/20 transition px-3 py-1.5 rounded-lg text-xs font-medium text-emerald-400 border border-emerald-500/20">
+                    <span class="material-icons text-sm">content_copy</span> 복사
+                </button>
+            </div>
+            <p class="text-slate-500 text-xs mt-3">이 코드를 공유하여 멤버를 초대하세요.</p>
+        </div>
+
+        <!-- Payment Request Section -->
+        <div class="glass-panel p-6 rounded-2xl border-t border-t-amber-500/20">
+            <div class="flex items-center gap-2 mb-6">
+                <span class="material-icons text-amber-500">diamond</span>
+                <h2 class="font-bold text-xl text-white">Credit Subscription</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <!-- Month Plan -->
+                <div onclick="selectPlan('month')" id="planMonth"
+                    class="cursor-pointer bg-slate-900/50 hover:bg-slate-800/50 border border-slate-700 hover:border-emerald-500 p-5 rounded-xl transition-all duration-300 relative group">
+                    <div
+                        class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-slate-600 group-hover:border-emerald-500">
+                    </div>
+                    <p class="font-medium text-slate-300">Monthly Pack</p>
+                    <p class="text-2xl font-bold text-white mt-1">30,000 P</p>
+                    <p class="text-sm text-emerald-400 mt-2 font-medium">₩ 23,000</p>
+                </div>
+                <!-- Year Plan -->
+                <div onclick="selectPlan('year')" id="planYear"
+                    class="cursor-pointer bg-slate-900/50 hover:bg-slate-800/50 border border-slate-700 hover:border-amber-500 p-5 rounded-xl transition-all duration-300 relative group">
+                    <div
+                        class="absolute top-0 right-0 bg-amber-500 text-black text-[10px] font-bold px-2 py-0.5 rounded-bl-lg rounded-tr-lg">
+                        BEST</div>
+                    <div
+                        class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-slate-600 group-hover:border-amber-500">
+                    </div>
+                    <p class="font-medium text-slate-300">Yearly Pack</p>
+                    <p class="text-2xl font-bold text-white mt-1">420,000 P</p>
+                    <p class="text-sm text-amber-400 mt-2 font-medium">₩ 280,000</p>
+                </div>
+            </div>
+
+            <!-- Payment Info (Hidden until selected) -->
+            <div id="paymentInfo" class="hidden animate-fade-in-up">
+                <div class="bg-black/40 p-5 rounded-xl border border-slate-700 space-y-3">
+                    <p class="text-center font-medium text-slate-300 mb-4 border-b border-slate-700 pb-2">입금 계좌 정보</p>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-slate-500">Bank</span>
+                        <span class="text-yellow-400 font-bold tracking-wide">카카오뱅크 (Kakao Bank)</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-slate-500">Account</span>
+                        <span class="font-mono text-slate-200 tracking-wider">7777-03-4553512</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-slate-500">Owner</span>
+                        <span class="text-emerald-400 font-bold">박두리</span>
+                    </div>
+                </div>
+                <button onclick="submitPayment()"
+                    class="w-full mt-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white py-4 rounded-xl font-bold shadow-lg shadow-emerald-900/50 transition-all transform hover:scale-[1.02]">
+                    입금 완료 및 충전 요청
+                </button>
+            </div>
+        </div>
+
+        <!-- Members Section -->
+        <div class="glass-panel p-6 rounded-2xl">
+            <h3 class="font-bold mb-4 text-slate-300">Club Members</h3>
+            <div id="memberList" class="space-y-3">
+                <!-- JS Load -->
+            </div>
+        </div>
+
+    </main>
+
+    <script src="/js/utils.js"></script>
+    <script src="/js/clubAdmin.js"></script>
+    <script>
+        // Inline simple animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+            .animate-fade-in-up { animation: fadeInUp 0.5s ease-out forwards; }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>
