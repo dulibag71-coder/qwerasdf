@@ -1,7 +1,0 @@
-node_modules/
-.env
-golf_club_v11.db
-uploads/
-.DS_Store
-*.log
-.vercel/
