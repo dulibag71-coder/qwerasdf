@@ -46,14 +46,14 @@
         <div id="role-selection" style="display: none;">
           <div class="room-info">
             <div>ROOM CODE: <span id="current-room-code" class="highlight">----</span></div>
-            <div>PLAYERS: <span id="player-count">0/4</span></div>
+            <div>PLAYERS: <span id="player-count">0/2</span></div>
           </div>
 
           <div class="role-selection-container">
             <h3>&gt; SELECT YOUR ROLE:</h3>
 
             <div class="role-category">
-              <h4>WHITEHATS (Cooperative Team)</h4>
+              <h4>WHITEHATS (2 Human Players)</h4>
               <div class="role-grid">
                 <button class="role-btn" data-role="analyst">
                   <div class="role-name">ANALYST HACKER</div>
@@ -67,16 +67,15 @@
             </div>
 
             <div class="role-category">
-              <h4>SYSTEM ROLES</h4>
-              <div class="role-grid">
-                <button class="role-btn" data-role="client">
-                  <div class="role-name">CLIENT SIDE</div>
-                  <div class="role-desc">AUTH + UI (User-facing)</div>
-                </button>
-                <button class="role-btn" data-role="server">
-                  <div class="role-name">SERVER SIDE</div>
-                  <div class="role-desc">DB + Server + Network</div>
-                </button>
+              <h4>SYSTEM ROLES (AI Controlled)</h4>
+              <div class="ai-info" style="padding: 15px; background: rgba(0, 170, 255, 0.1); border: 1px solid #00aaff; margin-top: 10px;">
+                <div style="font-size: 13px; color: #00aaff;">🤖 AI Systems (Automatic):</div>
+                <div style="font-size: 11px; color: #888; margin-top: 5px;">
+                  • CLIENT SIDE - AI controlled<br>
+                  • SERVER SIDE - AI controlled<br>
+                  <br>
+                  Systems respond automatically. You only need 2 human players!
+                </div>
               </div>
             </div>
           </div>

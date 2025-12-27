@@ -323,9 +323,16 @@ io.on('connection', (socket) => {
     const room = rooms.get(socket.roomCode);
     if (!room) return;
 
-    // Check minimum players (2 whitehats + 2 systems)
-    if (room.players.size < 4) {
-      socket.emit('error', { message: 'Need all 4 players to start' });
+    // Check minimum players (2 whitehats only - systems are AI)
+    if (room.players.size < 2) {
+      socket.emit('error', { message: 'Need 2 whitehat players to start' });
+      return;
+    }
+
+    // Verify both whitehats are present
+    const roles = Array.from(room.players.values()).map(p => p.role);
+    if (!roles.includes('analyst') || !roles.includes('attacker')) {
+      socket.emit('error', { message: 'Need both Analyst and Attacker roles' });
       return;
     }
 

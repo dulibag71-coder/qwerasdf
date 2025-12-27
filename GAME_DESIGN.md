@@ -3,7 +3,7 @@
 ## 1. Game Overview
 
 **Genre:** Cooperative Think Game / Security Simulation
-**Players:** 4 (2 Whitehats + 2 System Roles)
+**Players:** 2 Human + 2 AI Systems
 **Platform:** Web-based multiplayer
 **Theme:** Ethical penetration testing education
 
@@ -32,15 +32,19 @@
 
 **Cooperation Requirement:** Both must vote YES to execute any action
 
-#### System Roles (2 players)
-Each controls a critical system layer:
+#### AI Systems (2 automated systems)
+AI-controlled systems that respond automatically:
 
-| Role | Responsibility | Hidden Security State |
-|------|----------------|----------------------|
+| System | Responsibility | Hidden Security State |
+|--------|----------------|----------------------|
 | CLIENT SIDE | Authentication + UI (user-facing) | [WEAK / NORMAL / STRONG] |
 | SERVER SIDE | Database + Server + Network (backend) | [WEAK / NORMAL / STRONG] |
 
-**Secret:** Each player knows their own security level but not others
+**AI Behavior:**
+- Automatically initialized with random security states
+- Respond to attacks based on their security level
+- No human interaction needed
+- Hidden states remain secret from whitehats
 
 ---
 

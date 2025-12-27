@@ -27,8 +27,8 @@
 - **Risk management** - Balance testing vs. system stability
 
 ### Game Stats
-- **Players:** 4 (2 Whitehats + 2 System Roles)
-- **Duration:** 8 rounds (~20-25 minutes)
+- **Players:** 2 (Human Players) + 2 AI Systems
+- **Duration:** 8 rounds (~15-20 minutes)
 - **Platform:** Web-based multiplayer
 - **Age:** 14+ (educational purposes)
 
@@ -38,17 +38,21 @@
 
 ### Roles
 
-#### Whitehats (2 players - Cooperative)
+#### Whitehats (2 human players - Cooperative)
 1. **Analyst Hacker** - Interprets logs and metrics
 2. **Attack Hacker** - Executes security tests
 
 **Both must agree to take any action!**
 
-#### System Roles (2 players)
-- **CLIENT SIDE** - Authentication + UI (user-facing layer)
-- **SERVER SIDE** - Database + Server + Network (backend layer)
+#### AI Systems (Automatic - No human needed)
+- **CLIENT SIDE** - Authentication + UI (AI controlled)
+- **SERVER SIDE** - Database + Server + Network (AI controlled)
 
-Each system has a **hidden security state**: WEAK / NORMAL / STRONG
+**AI systems automatically:**
+- Start with random security states (WEAK / NORMAL / STRONG)
+- Respond to attacks automatically
+- Apply patches you select
+- No human player needed!
 
 ---
 
