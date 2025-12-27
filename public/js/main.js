@@ -247,7 +247,7 @@ function getAlertLevelText(level) {
 
 // Socket Event Handlers
 socket.on('room-update', (data) => {
-  playerCountSpan.textContent = `${data.players.length}/8`;
+  playerCountSpan.textContent = `${data.players.length}/4`;
 
   // Update players list
   playersContainer.innerHTML = '';
@@ -272,8 +272,8 @@ socket.on('room-update', (data) => {
     }
   });
 
-  // Show start button if enough players and you're the first whitehat
-  if (data.players.length >= 5 && data.players[0].role === gameState.playerRole) {
+  // Show start button if all 4 players connected and you're the first player
+  if (data.players.length >= 4 && data.players[0].role === gameState.playerRole) {
     startGameBtn.style.display = 'block';
   }
 });

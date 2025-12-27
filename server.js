@@ -25,21 +25,18 @@ const rooms = new Map();
 const ROLES = {
   ANALYST: 'analyst',
   ATTACKER: 'attacker',
-  AUTH: 'auth',
-  NETWORK: 'network',
-  DATABASE: 'database',
-  SERVER: 'server',
-  UI: 'ui'
+  CLIENT: 'client',
+  SERVER: 'server'
 };
 
 const SECURITY_STATES = ['WEAK', 'NORMAL', 'STRONG'];
 
 const ATTACKS = {
-  PHISH_TEST: { name: 'Social Engineering Test', targets: ['auth', 'ui'] },
-  BRUTE_SIM: { name: 'Authentication Strength Test', targets: ['auth'] },
-  INJECT_SIM: { name: 'Input Validation Test', targets: ['database', 'server'] },
-  DOS_SIM: { name: 'Load Capacity Test', targets: ['network', 'server'] },
-  MISCONFIG_SCAN: { name: 'Configuration Audit', targets: ['auth', 'network', 'database', 'server', 'ui'] }
+  PHISH_TEST: { name: 'Social Engineering Test', targets: ['client'] },
+  BRUTE_SIM: { name: 'Authentication Strength Test', targets: ['client'] },
+  INJECT_SIM: { name: 'Input Validation Test', targets: ['server'] },
+  DOS_SIM: { name: 'Load Capacity Test', targets: ['server'] },
+  MISCONFIG_SCAN: { name: 'Configuration Audit', targets: ['client', 'server'] }
 };
 
 const PATCHES = {
@@ -87,16 +84,16 @@ function createRoom(roomCode) {
 
 // Initialize system modules with random security states
 function initializeModules() {
-  const moduleNames = ['auth', 'network', 'database', 'server', 'ui'];
+  const moduleNames = ['client', 'server'];
   const modules = {};
 
   moduleNames.forEach(name => {
-    // Ensure at least 2 WEAK modules for gameplay
+    // Ensure at least 1 WEAK module for gameplay
     const random = Math.random();
     let security;
-    if (Object.keys(modules).length < 2 && random < 0.4) {
+    if (Object.keys(modules).length < 1 && random < 0.5) {
       security = 'WEAK';
-    } else if (random < 0.3) {
+    } else if (random < 0.4) {
       security = 'WEAK';
     } else if (random < 0.7) {
       security = 'NORMAL';
@@ -208,7 +205,7 @@ function calculateSecurityLevel(modules) {
     if (module.security === 'STRONG') score += 20;
     else if (module.security === 'NORMAL') score += 10;
   });
-  return Math.round((score / 100) * 100);
+  return Math.round((score / 40) * 100);
 }
 
 // Apply patch
@@ -237,7 +234,7 @@ function applyPatch(room, patchType) {
 
 // Check victory conditions
 function checkVictoryConditions(room) {
-  if (room.identifiedVulnerabilities.length >= 3 &&
+  if (room.identifiedVulnerabilities.length >= 1 &&
       room.securityLevel >= 70 &&
       room.alertLevel < 9) {
     return { victory: true, reason: 'All victory conditions met!' };
@@ -251,12 +248,12 @@ function checkVictoryConditions(room) {
     m.lastResponse && m.lastResponse.vulnerable
   ).length;
 
-  if (compromisedModules >= 4) {
-    return { defeat: true, reason: '4+ modules compromised!' };
+  if (compromisedModules >= 2) {
+    return { defeat: true, reason: 'All systems compromised!' };
   }
 
   if (room.round >= room.maxRounds) {
-    if (room.identifiedVulnerabilities.length >= 3 && room.securityLevel >= 70) {
+    if (room.identifiedVulnerabilities.length >= 1 && room.securityLevel >= 70) {
       return { victory: true, reason: 'Victory conditions met!' };
     } else {
       return { defeat: true, reason: 'Round limit reached without victory!' };
@@ -326,9 +323,9 @@ io.on('connection', (socket) => {
     const room = rooms.get(socket.roomCode);
     if (!room) return;
 
-    // Check minimum players (2 whitehats + at least 3 modules)
-    if (room.players.size < 5) {
-      socket.emit('error', { message: 'Need at least 5 players to start' });
+    // Check minimum players (2 whitehats + 2 systems)
+    if (room.players.size < 4) {
+      socket.emit('error', { message: 'Need all 4 players to start' });
       return;
     }
 

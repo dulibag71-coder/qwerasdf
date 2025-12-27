@@ -46,7 +46,7 @@
         <div id="role-selection" style="display: none;">
           <div class="room-info">
             <div>ROOM CODE: <span id="current-room-code" class="highlight">----</span></div>
-            <div>PLAYERS: <span id="player-count">0/8</span></div>
+            <div>PLAYERS: <span id="player-count">0/4</span></div>
           </div>
 
           <div class="role-selection-container">
@@ -67,27 +67,15 @@
             </div>
 
             <div class="role-category">
-              <h4>SYSTEM MODULES</h4>
+              <h4>SYSTEM ROLES</h4>
               <div class="role-grid">
-                <button class="role-btn" data-role="auth">
-                  <div class="role-name">AUTH</div>
-                  <div class="role-desc">Authentication System</div>
-                </button>
-                <button class="role-btn" data-role="network">
-                  <div class="role-name">NETWORK</div>
-                  <div class="role-desc">Network Layer</div>
-                </button>
-                <button class="role-btn" data-role="database">
-                  <div class="role-name">DATABASE</div>
-                  <div class="role-desc">Data Storage</div>
+                <button class="role-btn" data-role="client">
+                  <div class="role-name">CLIENT SIDE</div>
+                  <div class="role-desc">AUTH + UI (User-facing)</div>
                 </button>
                 <button class="role-btn" data-role="server">
-                  <div class="role-name">SERVER</div>
-                  <div class="role-desc">Application Server</div>
-                </button>
-                <button class="role-btn" data-role="ui">
-                  <div class="role-name">UI</div>
-                  <div class="role-desc">User Interface</div>
+                  <div class="role-name">SERVER SIDE</div>
+                  <div class="role-desc">DB + Server + Network</div>
                 </button>
               </div>
             </div>
@@ -144,27 +132,27 @@
                   <button class="attack-btn" data-attack="PHISH_TEST">
                     <div class="attack-name">PHISH_TEST</div>
                     <div class="attack-desc">Social Engineering Test</div>
-                    <div class="attack-targets">Targets: AUTH, UI</div>
+                    <div class="attack-targets">Targets: CLIENT SIDE</div>
                   </button>
                   <button class="attack-btn" data-attack="BRUTE_SIM">
                     <div class="attack-name">BRUTE_SIM</div>
                     <div class="attack-desc">Authentication Strength</div>
-                    <div class="attack-targets">Targets: AUTH</div>
+                    <div class="attack-targets">Targets: CLIENT SIDE</div>
                   </button>
                   <button class="attack-btn" data-attack="INJECT_SIM">
                     <div class="attack-name">INJECT_SIM</div>
                     <div class="attack-desc">Input Validation Test</div>
-                    <div class="attack-targets">Targets: DATABASE, SERVER</div>
+                    <div class="attack-targets">Targets: SERVER SIDE</div>
                   </button>
                   <button class="attack-btn" data-attack="DOS_SIM">
                     <div class="attack-name">DOS_SIM</div>
                     <div class="attack-desc">Load Capacity Test</div>
-                    <div class="attack-targets">Targets: NETWORK, SERVER</div>
+                    <div class="attack-targets">Targets: SERVER SIDE</div>
                   </button>
                   <button class="attack-btn" data-attack="MISCONFIG_SCAN">
                     <div class="attack-name">MISCONFIG_SCAN</div>
                     <div class="attack-desc">Configuration Audit</div>
-                    <div class="attack-targets">Targets: ALL MODULES</div>
+                    <div class="attack-targets">Targets: ALL SYSTEMS</div>
                   </button>
                 </div>
 

@@ -27,8 +27,8 @@
 - **Risk management** - Balance testing vs. system stability
 
 ### Game Stats
-- **Players:** 7 (2 Whitehats + 5 System Modules)
-- **Duration:** 8 rounds (~25-30 minutes)
+- **Players:** 4 (2 Whitehats + 2 System Roles)
+- **Duration:** 8 rounds (~20-25 minutes)
 - **Platform:** Web-based multiplayer
 - **Age:** 14+ (educational purposes)
 
@@ -44,27 +44,24 @@
 
 **Both must agree to take any action!**
 
-#### System Modules (5 players)
-- **AUTH** - Authentication system
-- **NETWORK** - Network layer
-- **DATABASE** - Data storage
-- **SERVER** - Application server
-- **UI** - User interface
+#### System Roles (2 players)
+- **CLIENT SIDE** - Authentication + UI (user-facing layer)
+- **SERVER SIDE** - Database + Server + Network (backend layer)
 
-Each module has a **hidden security state**: WEAK / NORMAL / STRONG
+Each system has a **hidden security state**: WEAK / NORMAL / STRONG
 
 ---
 
 ## 🎯 Objective
 
 ### Victory Conditions (All required)
-- Identify 3+ vulnerable modules correctly
+- Identify 1+ vulnerable system correctly
 - Reach Security Level ≥ 70%
 - Keep Alert Level below CRITICAL
 
 ### Defeat Conditions (Any triggers defeat)
 - Alert Level reaches MAXIMUM
-- 4+ modules compromised
+- Both systems compromised
 - Round 8 ends without victory
 
 ---
@@ -164,11 +161,11 @@ All attacks are **educational simulations** - no real hacking occurs!
 
 | Attack | Description | Targets |
 |--------|-------------|---------|
-| **PHISH_TEST** | Social engineering resistance | AUTH, UI |
-| **BRUTE_SIM** | Authentication strength | AUTH |
-| **INJECT_SIM** | Input validation | DATABASE, SERVER |
-| **DOS_SIM** | Load capacity | NETWORK, SERVER |
-| **MISCONFIG_SCAN** | Configuration audit | ALL MODULES |
+| **PHISH_TEST** | Social engineering resistance | CLIENT SIDE |
+| **BRUTE_SIM** | Authentication strength | CLIENT SIDE |
+| **INJECT_SIM** | Input validation | SERVER SIDE |
+| **DOS_SIM** | Load capacity | SERVER SIDE |
+| **MISCONFIG_SCAN** | Configuration audit | ALL SYSTEMS |
 
 ### Reading Attack Results
 

@@ -3,7 +3,7 @@
 ## 1. Game Overview
 
 **Genre:** Cooperative Think Game / Security Simulation
-**Players:** 7 (2 Whitehats + 5 System Modules)
+**Players:** 4 (2 Whitehats + 2 System Roles)
 **Platform:** Web-based multiplayer
 **Theme:** Ethical penetration testing education
 
@@ -32,18 +32,15 @@
 
 **Cooperation Requirement:** Both must vote YES to execute any action
 
-#### System Modules (5 players)
-Each controls one critical system component:
+#### System Roles (2 players)
+Each controls a critical system layer:
 
-| Module | Responsibility | Hidden Security State |
-|--------|----------------|----------------------|
-| AUTH | Authentication system | [WEAK / NORMAL / STRONG] |
-| NETWORK | Network layer | [WEAK / NORMAL / STRONG] |
-| DATABASE | Data storage | [WEAK / NORMAL / STRONG] |
-| SERVER | Application server | [WEAK / NORMAL / STRONG] |
-| UI | User interface | [WEAK / NORMAL / STRONG] |
+| Role | Responsibility | Hidden Security State |
+|------|----------------|----------------------|
+| CLIENT SIDE | Authentication + UI (user-facing) | [WEAK / NORMAL / STRONG] |
+| SERVER SIDE | Database + Server + Network (backend) | [WEAK / NORMAL / STRONG] |
 
-**Module Secret:** Each player knows their own security level but not others
+**Secret:** Each player knows their own security level but not others
 
 ---
 
