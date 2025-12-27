@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WHITEHAT PROTOCOL - Educational Security Simulation</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="scanline"></div>
+
+  <!-- Lobby Screen -->
+  <div id="lobby-screen" class="screen active">
+    <div class="terminal-container">
+      <div class="terminal-header">
+        <div class="terminal-title">WHITEHAT PROTOCOL v1.0</div>
+        <div class="connection-status">[Secure Connection Established]</div>
+      </div>
+
+      <div class="disclaimer">
+        <p>⚠️ EDUCATIONAL SIMULATION ONLY</p>
+        <p>This is a cooperative security training game. All activities are fictional.</p>
+        <p>Real-world hacking without authorization is illegal and unethical.</p>
+      </div>
+
+      <div class="terminal-content">
+        <div id="lobby-main">
+          <div class="input-group">
+            <label for="player-name">&gt; ENTER CALLSIGN:</label>
+            <input type="text" id="player-name" maxlength="12" placeholder="YourName">
+          </div>
+
+          <div class="button-group">
+            <button id="create-room-btn" class="terminal-btn primary">CREATE ROOM</button>
+          </div>
+
+          <div class="divider">━━━━━━━━ OR ━━━━━━━━</div>
+
+          <div class="input-group">
+            <label for="room-code">&gt; ROOM CODE:</label>
+            <input type="text" id="room-code" maxlength="4" placeholder="XXXX" style="text-transform: uppercase;">
+            <button id="join-room-btn" class="terminal-btn">JOIN ROOM</button>
+          </div>
+        </div>
+
+        <div id="role-selection" style="display: none;">
+          <div class="room-info">
+            <div>ROOM CODE: <span id="current-room-code" class="highlight">----</span></div>
+            <div>PLAYERS: <span id="player-count">0/8</span></div>
+          </div>
+
+          <div class="role-selection-container">
+            <h3>&gt; SELECT YOUR ROLE:</h3>
+
+            <div class="role-category">
+              <h4>WHITEHATS (Cooperative Team)</h4>
+              <div class="role-grid">
+                <button class="role-btn" data-role="analyst">
+                  <div class="role-name">ANALYST HACKER</div>
+                  <div class="role-desc">Interpret logs & metrics</div>
+                </button>
+                <button class="role-btn" data-role="attacker">
+                  <div class="role-name">ATTACK HACKER</div>
+                  <div class="role-desc">Execute security tests</div>
+                </button>
+              </div>
+            </div>
+
+            <div class="role-category">
+              <h4>SYSTEM MODULES</h4>
+              <div class="role-grid">
+                <button class="role-btn" data-role="auth">
+                  <div class="role-name">AUTH</div>
+                  <div class="role-desc">Authentication System</div>
+                </button>
+                <button class="role-btn" data-role="network">
+                  <div class="role-name">NETWORK</div>
+                  <div class="role-desc">Network Layer</div>
+                </button>
+                <button class="role-btn" data-role="database">
+                  <div class="role-name">DATABASE</div>
+                  <div class="role-desc">Data Storage</div>
+                </button>
+                <button class="role-btn" data-role="server">
+                  <div class="role-name">SERVER</div>
+                  <div class="role-desc">Application Server</div>
+                </button>
+                <button class="role-btn" data-role="ui">
+                  <div class="role-name">UI</div>
+                  <div class="role-desc">User Interface</div>
+                </button>
+                <button class="role-btn" data-role="monitor">
+                  <div class="role-name">MONITOR</div>
+                  <div class="role-desc">Monitoring System</div>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="players-list">
+            <h4>&gt; CONNECTED PLAYERS:</h4>
+            <div id="players-container"></div>
+          </div>
+
+          <button id="start-game-btn" class="terminal-btn primary" style="display: none;">
+            START PROTOCOL
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="game-screen" class="screen">
+    <div class="game-container">
+      <!-- Header -->
+      <div class="game-header">
+        <div class="header-left">
+          <div class="round-info">ROUND <span id="round-number">1</span>/8</div>
+          <div class="phase-info">PHASE: <span id="current-phase">WAITING</span></div>
+        </div>
+        <div class="header-right">
+          <div class="security-meter">
+            SECURITY: <span id="security-level" class="metric">50</span>%
+          </div>
+          <div class="alert-meter">
+            ALERT: <span id="alert-level" class="metric">LOW</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content Area -->
+      <div class="game-content">
+        <!-- Whitehat View -->
+        <div id="whitehat-view" class="view-container" style="display: none;">
+          <div class="panel log-panel">
+            <div class="panel-header">SYSTEM LOG</div>
+            <div id="system-log" class="log-content"></div>
+          </div>
+
+          <div class="panel action-panel">
+            <div class="panel-header">ACTIONS</div>
+            <div id="action-content">
+              <!-- Attack Selection Phase -->
+              <div id="attack-selection-ui" style="display: none;">
+                <h4>&gt; SELECT TEST ATTACK:</h4>
+                <div class="attack-grid">
+                  <button class="attack-btn" data-attack="PHISH_TEST">
+                    <div class="attack-name">PHISH_TEST</div>
+                    <div class="attack-desc">Social Engineering Test</div>
+                    <div class="attack-targets">Targets: AUTH, UI</div>
+                  </button>
+                  <button class="attack-btn" data-attack="BRUTE_SIM">
+                    <div class="attack-name">BRUTE_SIM</div>
+                    <div class="attack-desc">Authentication Strength</div>
+                    <div class="attack-targets">Targets: AUTH, MONITOR</div>
+                  </button>
+                  <button class="attack-btn" data-attack="INJECT_SIM">
+                    <div class="attack-name">INJECT_SIM</div>
+                    <div class="attack-desc">Input Validation Test</div>
+                    <div class="attack-targets">Targets: DATABASE, SERVER</div>
+                  </button>
+                  <button class="attack-btn" data-attack="DOS_SIM">
+                    <div class="attack-name">DOS_SIM</div>
+                    <div class="attack-desc">Load Capacity Test</div>
+                    <div class="attack-targets">Targets: NETWORK, SERVER</div>
+                  </button>
+                  <button class="attack-btn" data-attack="MISCONFIG_SCAN">
+                    <div class="attack-name">MISCONFIG_SCAN</div>
+                    <div class="attack-desc">Configuration Audit</div>
+                    <div class="attack-targets">Targets: ALL MODULES</div>
+                  </button>
+                </div>
+
+                <div class="vote-status">
+                  <div>ANALYST: <span id="analyst-vote">---</span></div>
+                  <div>ATTACKER: <span id="attacker-vote">---</span></div>
+                </div>
+              </div>
+
+              <!-- Defense Patch Phase -->
+              <div id="patch-selection-ui" style="display: none;">
+                <h4>&gt; SELECT DEFENSE PATCH (1 per round):</h4>
+                <div class="patch-grid">
+                  <button class="patch-btn" data-patch="AUTH_HARDENING">
+                    <div class="patch-name">AUTH_HARDENING</div>
+                    <div class="patch-desc">Reduces BRUTE_SIM vulnerability</div>
+                    <div class="patch-duration">Duration: 2 rounds</div>
+                  </button>
+                  <button class="patch-btn" data-patch="INPUT_VALIDATION">
+                    <div class="patch-name">INPUT_VALIDATION</div>
+                    <div class="patch-desc">Reduces INJECT_SIM vulnerability</div>
+                    <div class="patch-duration">Duration: 2 rounds</div>
+                  </button>
+                  <button class="patch-btn" data-patch="MONITORING_ENHANCE">
+                    <div class="patch-name">MONITORING_ENHANCE</div>
+                    <div class="patch-desc">Enhanced log details</div>
+                    <div class="patch-duration">Duration: 3 rounds</div>
+                  </button>
+                  <button class="patch-btn" data-patch="NETWORK_STABILIZE">
+                    <div class="patch-name">NETWORK_STABILIZE</div>
+                    <div class="patch-desc">Reduces DOS_SIM vulnerability</div>
+                    <div class="patch-duration">Duration: 2 rounds</div>
+                  </button>
+                </div>
+              </div>
+
+              <div id="waiting-ui">
+                <p class="waiting-text">Waiting for phase to begin...</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel intel-panel">
+            <div class="panel-header">INTELLIGENCE</div>
+            <div id="intel-content">
+              <div class="intel-item">
+                <strong>Identified Vulnerabilities:</strong>
+                <div id="identified-vulns">None yet</div>
+              </div>
+              <div class="intel-item">
+                <button id="identify-vuln-btn" class="terminal-btn small">
+                  IDENTIFY VULNERABLE MODULE
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Module View -->
+        <div id="module-view" class="view-container" style="display: none;">
+          <div class="panel module-status-panel">
+            <div class="panel-header">MODULE: <span id="module-name">UNKNOWN</span></div>
+            <div class="module-content">
+              <div class="status-item">
+                <strong>YOUR SECURITY STATE:</strong>
+                <div id="module-security" class="security-indicator">
+                  <div class="security-bar">
+                    <div class="security-fill" id="security-fill"></div>
+                  </div>
+                  <div id="security-text">INITIALIZING...</div>
+                </div>
+              </div>
+
+              <div class="status-item">
+                <strong>RECENT TEST RESULTS:</strong>
+                <div id="module-response" class="response-log">
+                  No tests executed yet
+                </div>
+              </div>
+
+              <div class="status-item">
+                <strong>ACTIVE PATCHES:</strong>
+                <div id="module-patches">
+                  None
+                </div>
+              </div>
+
+              <div class="status-item waiting-notice">
+                <p>⏳ Waiting for Whitehats to execute security tests...</p>
+                <p class="small-text">You will see your module's response here (private to you)</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel module-log-panel">
+            <div class="panel-header">SYSTEM EVENTS</div>
+            <div id="module-log" class="log-content"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Over Screen -->
+  <div id="gameover-screen" class="screen">
+    <div class="terminal-container">
+      <div class="terminal-header">
+        <div class="terminal-title">PROTOCOL COMPLETE</div>
+      </div>
+      <div class="terminal-content">
+        <div id="gameover-content" class="gameover-content">
+          <div id="gameover-result"></div>
+          <div id="gameover-stats"></div>
+          <button id="return-lobby-btn" class="terminal-btn primary">RETURN TO LOBBY</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>
