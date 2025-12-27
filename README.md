@@ -102,6 +102,30 @@ http://localhost:3000
 
 ---
 
+## 🌐 Online Deployment
+
+Deploy your game online for FREE in minutes!
+
+### Quick Deploy to Render.com (Recommended)
+
+1. **Push to GitHub** (already done!)
+2. **Sign up at [render.com](https://render.com)** with GitHub
+3. **Create New Web Service** → Connect your repository
+4. **Select branch:** `claude/check-file-storage-XD92m`
+5. **Click "Create Web Service"** (auto-detects settings from `render.yaml`)
+6. **Wait 5 minutes** → Your game is LIVE! 🎉
+
+**Your URL:** `https://whitehat-protocol.onrender.com`
+
+### Other Options
+- **Railway.app** - Fast and simple
+- **Fly.io** - Global edge deployment
+- **Heroku** - Classic option (paid)
+
+📖 **See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions**
+
+---
+
 ## 🎲 Gameplay Guide
 
 ### Game Flow
