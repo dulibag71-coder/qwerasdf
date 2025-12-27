@@ -29,18 +29,17 @@ const ROLES = {
   NETWORK: 'network',
   DATABASE: 'database',
   SERVER: 'server',
-  UI: 'ui',
-  MONITOR: 'monitor'
+  UI: 'ui'
 };
 
 const SECURITY_STATES = ['WEAK', 'NORMAL', 'STRONG'];
 
 const ATTACKS = {
   PHISH_TEST: { name: 'Social Engineering Test', targets: ['auth', 'ui'] },
-  BRUTE_SIM: { name: 'Authentication Strength Test', targets: ['auth', 'monitor'] },
+  BRUTE_SIM: { name: 'Authentication Strength Test', targets: ['auth'] },
   INJECT_SIM: { name: 'Input Validation Test', targets: ['database', 'server'] },
   DOS_SIM: { name: 'Load Capacity Test', targets: ['network', 'server'] },
-  MISCONFIG_SCAN: { name: 'Configuration Audit', targets: ['auth', 'network', 'database', 'server', 'ui', 'monitor'] }
+  MISCONFIG_SCAN: { name: 'Configuration Audit', targets: ['auth', 'network', 'database', 'server', 'ui'] }
 };
 
 const PATCHES = {
@@ -88,7 +87,7 @@ function createRoom(roomCode) {
 
 // Initialize system modules with random security states
 function initializeModules() {
-  const moduleNames = ['auth', 'network', 'database', 'server', 'ui', 'monitor'];
+  const moduleNames = ['auth', 'network', 'database', 'server', 'ui'];
   const modules = {};
 
   moduleNames.forEach(name => {
@@ -209,7 +208,7 @@ function calculateSecurityLevel(modules) {
     if (module.security === 'STRONG') score += 20;
     else if (module.security === 'NORMAL') score += 10;
   });
-  return Math.round((score / 120) * 100);
+  return Math.round((score / 100) * 100);
 }
 
 // Apply patch

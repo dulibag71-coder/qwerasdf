@@ -27,7 +27,7 @@
 - **Risk management** - Balance testing vs. system stability
 
 ### Game Stats
-- **Players:** 8 (2 Whitehats + 6 System Modules)
+- **Players:** 7 (2 Whitehats + 5 System Modules)
 - **Duration:** 8 rounds (~25-30 minutes)
 - **Platform:** Web-based multiplayer
 - **Age:** 14+ (educational purposes)
@@ -44,13 +44,12 @@
 
 **Both must agree to take any action!**
 
-#### System Modules (6 players)
+#### System Modules (5 players)
 - **AUTH** - Authentication system
 - **NETWORK** - Network layer
 - **DATABASE** - Data storage
 - **SERVER** - Application server
 - **UI** - User interface
-- **MONITOR** - Monitoring system
 
 Each module has a **hidden security state**: WEAK / NORMAL / STRONG
 
@@ -166,7 +165,7 @@ All attacks are **educational simulations** - no real hacking occurs!
 | Attack | Description | Targets |
 |--------|-------------|---------|
 | **PHISH_TEST** | Social engineering resistance | AUTH, UI |
-| **BRUTE_SIM** | Authentication strength | AUTH, MONITOR |
+| **BRUTE_SIM** | Authentication strength | AUTH |
 | **INJECT_SIM** | Input validation | DATABASE, SERVER |
 | **DOS_SIM** | Load capacity | NETWORK, SERVER |
 | **MISCONFIG_SCAN** | Configuration audit | ALL MODULES |

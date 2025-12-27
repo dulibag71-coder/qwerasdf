@@ -3,7 +3,7 @@
 ## 1. Game Overview
 
 **Genre:** Cooperative Think Game / Security Simulation
-**Players:** 8 (2 Whitehats + 6 System Modules)
+**Players:** 7 (2 Whitehats + 5 System Modules)
 **Platform:** Web-based multiplayer
 **Theme:** Ethical penetration testing education
 
@@ -32,7 +32,7 @@
 
 **Cooperation Requirement:** Both must vote YES to execute any action
 
-#### System Modules (6 players)
+#### System Modules (5 players)
 Each controls one critical system component:
 
 | Module | Responsibility | Hidden Security State |
@@ -42,7 +42,6 @@ Each controls one critical system component:
 | DATABASE | Data storage | [WEAK / NORMAL / STRONG] |
 | SERVER | Application server | [WEAK / NORMAL / STRONG] |
 | UI | User interface | [WEAK / NORMAL / STRONG] |
-| MONITOR | Monitoring system | [WEAK / NORMAL / STRONG] |
 
 **Module Secret:** Each player knows their own security level but not others
 
@@ -96,7 +95,7 @@ All attacks are **conceptual simulations** for educational purposes:
 | Attack Code | Full Name | Target Modules | Description |
 |-------------|-----------|----------------|-------------|
 | PHISH_TEST | Social Engineering Test | AUTH, UI | Tests human factor vulnerabilities |
-| BRUTE_SIM | Authentication Strength Test | AUTH, MONITOR | Simulates credential testing |
+| BRUTE_SIM | Authentication Strength Test | AUTH | Simulates credential testing |
 | INJECT_SIM | Input Validation Test | DATABASE, SERVER | Tests SQL/command injection resistance |
 | DOS_SIM | Load Capacity Test | NETWORK, SERVER | Tests system resilience |
 | MISCONFIG_SCAN | Configuration Audit | ALL MODULES | Scans for configuration weaknesses |
@@ -162,7 +161,7 @@ Any of the following triggers defeat:
 
 ### Security Level Calculation
 ```
-Security Level = (Strong Modules × 20 + Normal × 10) / 120 × 100%
+Security Level = (Strong Modules × 20 + Normal × 10) / 100 × 100%
 ```
 
 ---
@@ -192,7 +191,7 @@ Security Level = (Strong Modules × 20 + Normal × 10) / 120 × 100%
 │  > JOIN ROOM [____]                 │
 │                                     │
 │  Room Code: XXXX                    │
-│  Players: 2/8                       │
+│  Players: 2/7                       │
 │                                     │
 │  [SELECT ROLE]                      │
 │  • Analyst Hacker                   │
