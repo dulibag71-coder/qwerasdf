@@ -247,20 +247,29 @@ function getAlertLevelText(level) {
 
 // Socket Event Handlers
 socket.on('room-update', (data) => {
-  playerCountSpan.textContent = `${data.players.length}/2`;
+  playerCountSpan.textContent = `${data.players.length}`;
 
   // Update players list
   playersContainer.innerHTML = '';
   data.players.forEach(player => {
     const playerItem = document.createElement('div');
     playerItem.className = 'player-item';
-    playerItem.textContent = `${player.name} - ${player.role.toUpperCase()}`;
+    const roleDisplay = player.role === 'spectator' ? '👁️ SPECTATOR' : player.role.toUpperCase();
+    playerItem.textContent = `${player.name} - ${roleDisplay}`;
     playersContainer.appendChild(playerItem);
   });
 
   // Update role buttons
   document.querySelectorAll('.role-btn').forEach(btn => {
     const role = btn.getAttribute('data-role');
+
+    // Spectator is always available (unlimited)
+    if (role === 'spectator') {
+      btn.classList.remove('taken');
+      btn.disabled = false;
+      return;
+    }
+
     const isTaken = data.players.some(p => p.role === role);
 
     if (isTaken && role !== gameState.playerRole) {

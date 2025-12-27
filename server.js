@@ -26,7 +26,8 @@ const ROLES = {
   ANALYST: 'analyst',
   ATTACKER: 'attacker',
   CLIENT: 'client',
-  SERVER: 'server'
+  SERVER: 'server',
+  SPECTATOR: 'spectator'
 };
 
 const SECURITY_STATES = ['WEAK', 'NORMAL', 'STRONG'];
@@ -288,14 +289,16 @@ io.on('connection', (socket) => {
       return callback({ success: false, error: 'Room not found' });
     }
 
-    if (room.players.size >= 8) {
+    if (room.players.size >= 100) {
       return callback({ success: false, error: 'Room is full' });
     }
 
-    // Check if role is already taken
-    const roleTaken = Array.from(room.players.values()).some(p => p.role === role);
-    if (roleTaken) {
-      return callback({ success: false, error: 'Role already taken' });
+    // Check if role is already taken (except spectator - unlimited)
+    if (role !== 'spectator') {
+      const roleTaken = Array.from(room.players.values()).some(p => p.role === role);
+      if (roleTaken) {
+        return callback({ success: false, error: 'Role already taken' });
+      }
     }
 
     socket.join(roomCode);
