@@ -308,8 +308,25 @@ io.on('connection', (socket) => {
     socket.join(roomCode);
     socket.roomCode = roomCode;
 
-    console.log(`Room created: ${roomCode}`);
+    console.log(`✅ Room created: ${roomCode}`);
+    console.log(`📊 Total rooms:`, rooms.size);
     callback({ success: true, roomCode });
+  });
+
+  // Verify room exists
+  socket.on('verify-room', ({ roomCode }, callback) => {
+    console.log(`🔍 Verify room request: ${roomCode}`);
+    console.log(`📊 Available rooms:`, Array.from(rooms.keys()));
+
+    const room = rooms.get(roomCode);
+
+    if (room) {
+      console.log(`✅ Room found: ${roomCode} (${room.players.size} players)`);
+      callback({ success: true, exists: true });
+    } else {
+      console.log(`❌ Room not found: ${roomCode}`);
+      callback({ success: false, exists: false });
+    }
   });
 
   // Join room
@@ -458,10 +475,15 @@ io.on('connection', (socket) => {
 
   // Disconnect
   socket.on('disconnect', () => {
-    console.log(`Player disconnected: ${socket.id}`);
+    console.log(`❌ Player disconnected: ${socket.id}`);
 
     const room = rooms.get(socket.roomCode);
     if (room) {
+      const player = room.players.get(socket.id);
+      if (player) {
+        console.log(`👤 ${player.name} (${player.role}) left room ${socket.roomCode}`);
+      }
+
       room.players.delete(socket.id);
 
       io.to(socket.roomCode).emit('room-update', {
@@ -471,7 +493,11 @@ io.on('connection', (socket) => {
 
       // If room is empty, delete it
       if (room.players.size === 0) {
+        console.log(`🗑️ Room ${socket.roomCode} is empty - deleting`);
         rooms.delete(socket.roomCode);
+        console.log(`📊 Remaining rooms: ${rooms.size}`);
+      } else {
+        console.log(`📊 Room ${socket.roomCode} now has ${room.players.size} players`);
       }
     }
   });

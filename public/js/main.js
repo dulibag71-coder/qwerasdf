@@ -190,9 +190,17 @@ function handleJoinRoom() {
   gameState.playerName = name;
   gameState.roomCode = code;
 
-  // First verify the room exists by trying to join with a test role request
-  // We'll actually join when they select a role
-  showRoleSelection();
+  // Verify room exists before showing role selection
+  socket.emit('verify-room', { roomCode: code }, (response) => {
+    console.log('📡 방 확인 응답:', response);
+    if (response.success) {
+      showRoleSelection();
+      addLogEntry(systemLog, `방 발견: ${code}`, 'info');
+    } else {
+      alert(`방을 찾을 수 없습니다.\n방 코드: ${code}\n\n방장이 먼저 방을 만들고 역할을 선택했는지 확인하세요.`);
+      console.error('❌ 방을 찾을 수 없음:', code);
+    }
+  });
 }
 
 // Show Role Selection
