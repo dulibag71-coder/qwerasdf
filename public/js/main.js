@@ -3,6 +3,27 @@
 
 const socket = io();
 
+// Connection status tracking
+let isConnected = false;
+
+// Socket.io connection events
+socket.on('connect', () => {
+  isConnected = true;
+  console.log('✅ Connected to server:', socket.id);
+  updateConnectionStatus(true);
+});
+
+socket.on('disconnect', () => {
+  isConnected = false;
+  console.log('❌ Disconnected from server');
+  updateConnectionStatus(false);
+});
+
+socket.on('connect_error', (error) => {
+  console.error('❌ Connection error:', error);
+  updateConnectionStatus(false);
+});
+
 // Game state
 let gameState = {
   playerName: '',
@@ -47,8 +68,24 @@ const waitingUI = document.getElementById('waiting-ui');
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
   setupEventListeners();
-  addLogEntry(systemLog, 'System initialized. Ready for connection.', 'info');
+  addLogEntry(systemLog, 'System initialized. Connecting to server...', 'info');
 });
+
+// Update connection status in UI
+function updateConnectionStatus(connected) {
+  const statusElement = document.querySelector('.connection-status');
+  if (statusElement) {
+    if (connected) {
+      statusElement.textContent = '[Secure Connection Established]';
+      statusElement.style.color = '#00ff41';
+      addLogEntry(systemLog, 'Connected to game server', 'success');
+    } else {
+      statusElement.textContent = '[Connection Lost - Reconnecting...]';
+      statusElement.style.color = '#ff4444';
+      addLogEntry(systemLog, 'Connection lost. Please refresh the page.', 'error');
+    }
+  }
+}
 
 // Setup Event Listeners
 function setupEventListeners() {
@@ -112,15 +149,24 @@ function handleCreateRoom() {
     return;
   }
 
+  if (!isConnected) {
+    alert('Not connected to server. Please wait or refresh the page.');
+    return;
+  }
+
   gameState.playerName = name;
 
+  console.log('📡 Creating room...');
   socket.emit('create-room', (response) => {
+    console.log('📡 Create room response:', response);
     if (response.success) {
       gameState.roomCode = response.roomCode;
       showRoleSelection();
       addLogEntry(systemLog, `Room created: ${response.roomCode}`, 'info');
+      console.log('✅ Room created:', response.roomCode);
     } else {
       alert('Failed to create room');
+      console.error('❌ Failed to create room');
     }
   });
 }
@@ -135,9 +181,17 @@ function handleJoinRoom() {
     return;
   }
 
+  if (!isConnected) {
+    alert('Not connected to server. Please wait or refresh the page.');
+    return;
+  }
+
+  console.log('📡 Attempting to join room:', code);
   gameState.playerName = name;
   gameState.roomCode = code;
 
+  // First verify the room exists by trying to join with a test role request
+  // We'll actually join when they select a role
   showRoleSelection();
 }
 
@@ -150,13 +204,29 @@ function showRoleSelection() {
 
 // Handle Role Selection
 function handleRoleSelection(role) {
-  if (!gameState.playerName || !gameState.roomCode) return;
+  if (!gameState.playerName || !gameState.roomCode) {
+    console.error('❌ Missing player name or room code');
+    return;
+  }
+
+  if (!isConnected) {
+    alert('Not connected to server. Please refresh the page.');
+    return;
+  }
+
+  console.log('📡 Joining room:', {
+    roomCode: gameState.roomCode,
+    playerName: gameState.playerName,
+    role: role
+  });
 
   socket.emit('join-room', {
     roomCode: gameState.roomCode,
     playerName: gameState.playerName,
     role: role
   }, (response) => {
+    console.log('📡 Join room response:', response);
+
     if (response.success) {
       gameState.playerRole = role;
       gameState.isWhitehat = (role === 'analyst' || role === 'attacker');
@@ -168,8 +238,17 @@ function handleRoleSelection(role) {
       document.querySelector(`[data-role="${role}"]`).classList.add('selected');
 
       addLogEntry(systemLog, `Role selected: ${role.toUpperCase()}`, 'info');
+      console.log('✅ Joined room successfully as', role);
     } else {
-      alert(response.error || 'Failed to join room');
+      const errorMsg = response.error || 'Failed to join room';
+      alert(errorMsg);
+      console.error('❌ Join room failed:', errorMsg);
+
+      // If room not found, go back to lobby
+      if (response.error === 'Room not found') {
+        alert('Room not found. Please check the room code and try again.');
+        location.reload();
+      }
     }
   });
 }

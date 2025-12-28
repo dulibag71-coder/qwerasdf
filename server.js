@@ -283,13 +283,18 @@ io.on('connection', (socket) => {
 
   // Join room
   socket.on('join-room', ({ roomCode, playerName, role }, callback) => {
+    console.log(`📡 Join room request: ${playerName} -> ${roomCode} (${role})`);
+    console.log(`📊 Available rooms:`, Array.from(rooms.keys()));
+
     const room = rooms.get(roomCode);
 
     if (!room) {
+      console.log(`❌ Room not found: ${roomCode}`);
       return callback({ success: false, error: 'Room not found' });
     }
 
     if (room.players.size >= 100) {
+      console.log(`❌ Room full: ${roomCode}`);
       return callback({ success: false, error: 'Room is full' });
     }
 
@@ -297,6 +302,7 @@ io.on('connection', (socket) => {
     if (role !== 'spectator') {
       const roleTaken = Array.from(room.players.values()).some(p => p.role === role);
       if (roleTaken) {
+        console.log(`❌ Role taken: ${role} in ${roomCode}`);
         return callback({ success: false, error: 'Role already taken' });
       }
     }
@@ -311,6 +317,9 @@ io.on('connection', (socket) => {
       name: playerName,
       role: role
     });
+
+    console.log(`✅ Player joined: ${playerName} (${role}) -> ${roomCode}`);
+    console.log(`📊 Room ${roomCode} now has ${room.players.size} players`);
 
     // Send room state to all players
     io.to(roomCode).emit('room-update', {
