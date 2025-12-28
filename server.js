@@ -33,18 +33,37 @@ const ROLES = {
 const SECURITY_STATES = ['WEAK', 'NORMAL', 'STRONG'];
 
 const ATTACKS = {
-  PHISH_TEST: { name: 'Social Engineering Test', targets: ['client'] },
-  BRUTE_SIM: { name: 'Authentication Strength Test', targets: ['client'] },
-  INJECT_SIM: { name: 'Input Validation Test', targets: ['server'] },
-  DOS_SIM: { name: 'Load Capacity Test', targets: ['server'] },
-  MISCONFIG_SCAN: { name: 'Configuration Audit', targets: ['client', 'server'] }
+  PHISH_TEST: { name: '피싱 공격 테스트', nameEN: 'Phishing Test', targets: ['client'], points: 10 },
+  BRUTE_SIM: { name: '무차별 대입 공격', nameEN: 'Brute Force', targets: ['client'], points: 15 },
+  INJECT_SIM: { name: 'SQL 인젝션 공격', nameEN: 'SQL Injection', targets: ['server'], points: 20 },
+  DOS_SIM: { name: '서비스 거부 공격', nameEN: 'DDoS Attack', targets: ['server'], points: 18 },
+  MISCONFIG_SCAN: { name: '설정 오류 스캔', nameEN: 'Config Scan', targets: ['client', 'server'], points: 12 },
+
+  // 새로운 공격 타입 추가
+  XSS_ATTACK: { name: 'XSS 공격 시뮬레이션', nameEN: 'XSS Attack', targets: ['client'], points: 17 },
+  CSRF_TEST: { name: 'CSRF 취약점 테스트', nameEN: 'CSRF Test', targets: ['client'], points: 16 },
+  MITM_SCAN: { name: '중간자 공격 스캔', nameEN: 'MITM Scan', targets: ['client', 'server'], points: 22 },
+  BUFFER_OVERFLOW: { name: '버퍼 오버플로우 테스트', nameEN: 'Buffer Overflow', targets: ['server'], points: 25 },
+  PRIVILEGE_ESC: { name: '권한 상승 공격', nameEN: 'Privilege Escalation', targets: ['server'], points: 23 },
+  RANSOMWARE_SIM: { name: '랜섬웨어 시뮬레이션', nameEN: 'Ransomware Sim', targets: ['client', 'server'], points: 30 },
+  ZERO_DAY: { name: '제로데이 공격 시뮬레이션', nameEN: 'Zero-Day Attack', targets: ['client', 'server'], points: 35 }
 };
 
 const PATCHES = {
-  AUTH_HARDENING: { duration: 2, reduces: 'BRUTE_SIM', amount: 0.3 },
-  INPUT_VALIDATION: { duration: 2, reduces: 'INJECT_SIM', amount: 0.4 },
-  MONITORING_ENHANCE: { duration: 3, effect: 'detailed_logs' },
-  NETWORK_STABILIZE: { duration: 2, reduces: 'DOS_SIM', amount: 0.35 }
+  AUTH_HARDENING: { name: '인증 강화', duration: 2, reduces: 'BRUTE_SIM', amount: 0.3, points: 15 },
+  INPUT_VALIDATION: { name: '입력 검증 강화', duration: 2, reduces: 'INJECT_SIM', amount: 0.4, points: 20 },
+  MONITORING_ENHANCE: { name: '모니터링 강화', duration: 3, effect: 'detailed_logs', points: 12 },
+  NETWORK_STABILIZE: { name: '네트워크 안정화', duration: 2, reduces: 'DOS_SIM', amount: 0.35, points: 18 },
+
+  // 새로운 패치 추가
+  XSS_FILTER: { name: 'XSS 필터링', duration: 2, reduces: 'XSS_ATTACK', amount: 0.45, points: 17 },
+  CSRF_TOKEN: { name: 'CSRF 토큰', duration: 3, reduces: 'CSRF_TEST', amount: 0.5, points: 16 },
+  ENCRYPTION_UPGRADE: { name: '암호화 업그레이드', duration: 3, reduces: 'MITM_SCAN', amount: 0.4, points: 22 },
+  MEMORY_PROTECTION: { name: '메모리 보호', duration: 2, reduces: 'BUFFER_OVERFLOW', amount: 0.55, points: 25 },
+  ACCESS_CONTROL: { name: '접근 제어 강화', duration: 2, reduces: 'PRIVILEGE_ESC', amount: 0.5, points: 23 },
+  BACKUP_SYSTEM: { name: '백업 시스템', duration: 4, reduces: 'RANSOMWARE_SIM', amount: 0.6, points: 30 },
+  FIREWALL_BOOST: { name: '방화벽 강화', duration: 3, reduces: 'ZERO_DAY', amount: 0.35, points: 28 },
+  INTRUSION_DETECTION: { name: '침입 탐지 시스템', duration: 4, effect: 'advanced_detection', points: 25 }
 };
 
 const PHASES = {
@@ -79,7 +98,19 @@ function createRoom(roomCode) {
     selectedPatch: null,
     modules: initializeModules(),
     identifiedVulnerabilities: [],
-    gameStarted: false
+    gameStarted: false,
+
+    // 점수 시스템
+    score: 0,
+    combo: 0,
+    maxCombo: 0,
+    achievements: [],
+    statistics: {
+      attacksExecuted: 0,
+      patchesApplied: 0,
+      vulnerabilitiesFound: 0,
+      perfectRounds: 0
+    }
   };
 }
 

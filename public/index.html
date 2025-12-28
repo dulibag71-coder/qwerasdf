@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WHITEHAT PROTOCOL - Educational Security Simulation</title>
+  <title>화이트햇 프로토콜 - 보안 시뮬레이션 게임</title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -13,94 +13,94 @@
   <div id="lobby-screen" class="screen active">
     <div class="terminal-container">
       <div class="terminal-header">
-        <div class="terminal-title">WHITEHAT PROTOCOL v1.0</div>
-        <div class="connection-status">[Secure Connection Established]</div>
+        <div class="terminal-title">화이트햇 프로토콜 v2.0</div>
+        <div class="connection-status">[보안 연결 성공]</div>
       </div>
 
       <div class="disclaimer">
-        <p>⚠️ EDUCATIONAL SIMULATION ONLY</p>
-        <p>This is a cooperative security training game. All activities are fictional.</p>
-        <p>Real-world hacking without authorization is illegal and unethical.</p>
+        <p>⚠️ 교육용 시뮬레이션</p>
+        <p>이것은 협동 보안 훈련 게임입니다. 모든 활동은 가상입니다.</p>
+        <p>실제 무단 해킹은 불법이며 비윤리적입니다.</p>
       </div>
 
       <div class="terminal-content">
         <div id="lobby-main">
           <div class="input-group">
-            <label for="player-name">&gt; ENTER CALLSIGN:</label>
-            <input type="text" id="player-name" maxlength="12" placeholder="YourName">
+            <label for="player-name">&gt; 닉네임 입력:</label>
+            <input type="text" id="player-name" maxlength="12" placeholder="닉네임">
           </div>
 
           <div class="button-group">
-            <button id="create-room-btn" class="terminal-btn primary">CREATE ROOM</button>
+            <button id="create-room-btn" class="terminal-btn primary">방 만들기</button>
           </div>
 
-          <div class="divider">━━━━━━━━ OR ━━━━━━━━</div>
+          <div class="divider">━━━━━━━━ 또는 ━━━━━━━━</div>
 
           <div class="input-group">
-            <label for="room-code">&gt; ROOM CODE:</label>
+            <label for="room-code">&gt; 방 코드:</label>
             <input type="text" id="room-code" maxlength="4" placeholder="XXXX" style="text-transform: uppercase;">
-            <button id="join-room-btn" class="terminal-btn">JOIN ROOM</button>
+            <button id="join-room-btn" class="terminal-btn">방 참여하기</button>
           </div>
         </div>
 
         <div id="role-selection" style="display: none;">
           <div class="room-info">
-            <div>ROOM CODE: <span id="current-room-code" class="highlight">----</span></div>
-            <div>PLAYERS: <span id="player-count">0</span></div>
-            <div style="font-size: 11px; color: #888;">Need 2 Whitehats to start</div>
+            <div>방 코드: <span id="current-room-code" class="highlight">----</span></div>
+            <div>플레이어: <span id="player-count">0</span></div>
+            <div style="font-size: 11px; color: #888;">시작하려면 화이트햇 2명 필요</div>
           </div>
 
           <div class="role-selection-container">
-            <h3>&gt; SELECT YOUR ROLE:</h3>
+            <h3>&gt; 역할을 선택하세요:</h3>
 
             <div class="role-category">
-              <h4>WHITEHATS (2 Human Players)</h4>
+              <h4>화이트햇 (2명의 플레이어)</h4>
               <div class="role-grid">
                 <button class="role-btn" data-role="analyst">
-                  <div class="role-name">ANALYST HACKER</div>
-                  <div class="role-desc">Interpret logs & metrics</div>
+                  <div class="role-name">🔍 분석가 해커</div>
+                  <div class="role-desc">로그 및 지표 분석</div>
                 </button>
                 <button class="role-btn" data-role="attacker">
-                  <div class="role-name">ATTACK HACKER</div>
-                  <div class="role-desc">Execute security tests</div>
+                  <div class="role-name">⚔️ 공격가 해커</div>
+                  <div class="role-desc">보안 테스트 실행</div>
                 </button>
               </div>
             </div>
 
             <div class="role-category">
-              <h4>SYSTEM ROLES (AI Controlled)</h4>
+              <h4>시스템 역할 (AI 자동 제어)</h4>
               <div class="ai-info" style="padding: 15px; background: rgba(0, 170, 255, 0.1); border: 1px solid #00aaff; margin-top: 10px;">
-                <div style="font-size: 13px; color: #00aaff;">🤖 AI Systems (Automatic):</div>
+                <div style="font-size: 13px; color: #00aaff;">🤖 AI 시스템 (자동):</div>
                 <div style="font-size: 11px; color: #888; margin-top: 5px;">
-                  • CLIENT SIDE - AI controlled<br>
-                  • SERVER SIDE - AI controlled<br>
+                  • 클라이언트 시스템 - AI 제어<br>
+                  • 서버 시스템 - AI 제어<br>
                   <br>
-                  Systems respond automatically. You only need 2 human players!
+                  시스템이 자동으로 응답합니다. 사람은 2명만 필요해요!
                 </div>
               </div>
             </div>
 
             <div class="role-category">
-              <h4>SPECTATOR (Watch Only)</h4>
+              <h4>관람자 (관전만 가능)</h4>
               <div class="role-grid">
                 <button class="role-btn" data-role="spectator">
-                  <div class="role-name">👁️ SPECTATOR</div>
-                  <div class="role-desc">Watch the game (unlimited)</div>
+                  <div class="role-name">👁️ 관람자</div>
+                  <div class="role-desc">게임 관람 (무제한)</div>
                 </button>
               </div>
               <div style="font-size: 11px; color: #888; margin-top: 10px; text-align: center;">
-                Join as spectator to watch others play!
+                관람자로 참여해서 다른 사람의 플레이를 구경하세요!
               </div>
             </div>
           </div>
 
           <div class="players-list">
-            <h4>&gt; CONNECTED PLAYERS:</h4>
+            <h4>&gt; 접속한 플레이어:</h4>
             <div id="players-container"></div>
           </div>
 
           <button id="start-game-btn" class="terminal-btn primary" style="display: none;">
-            START PROTOCOL
+            게임 시작
           </button>
         </div>
       </div>
@@ -113,15 +113,25 @@
       <!-- Header -->
       <div class="game-header">
         <div class="header-left">
-          <div class="round-info">ROUND <span id="round-number">1</span>/8</div>
-          <div class="phase-info">PHASE: <span id="current-phase">WAITING</span></div>
+          <div class="round-info">라운드 <span id="round-number">1</span>/8</div>
+          <div class="phase-info">단계: <span id="current-phase">대기중</span></div>
+        </div>
+        <div class="header-center">
+          <div class="score-display">
+            <div class="score-label">점수</div>
+            <div class="score-value"><span id="score">0</span></div>
+          </div>
+          <div class="combo-display" id="combo-display" style="display: none;">
+            <div class="combo-label">콤보</div>
+            <div class="combo-value">x<span id="combo">0</span></div>
+          </div>
         </div>
         <div class="header-right">
           <div class="security-meter">
-            SECURITY: <span id="security-level" class="metric">50</span>%
+            보안: <span id="security-level" class="metric">50</span>%
           </div>
           <div class="alert-meter">
-            ALERT: <span id="alert-level" class="metric">LOW</span>
+            경보: <span id="alert-level" class="metric">낮음</span>
           </div>
         </div>
       </div>
@@ -131,93 +141,168 @@
         <!-- Whitehat View -->
         <div id="whitehat-view" class="view-container" style="display: none;">
           <div class="panel log-panel">
-            <div class="panel-header">SYSTEM LOG</div>
+            <div class="panel-header">시스템 로그</div>
             <div id="system-log" class="log-content"></div>
           </div>
 
           <div class="panel action-panel">
-            <div class="panel-header">ACTIONS</div>
+            <div class="panel-header">행동</div>
             <div id="action-content">
               <!-- Attack Selection Phase -->
               <div id="attack-selection-ui" style="display: none;">
-                <h4>&gt; SELECT TEST ATTACK:</h4>
+                <h4>&gt; 테스트 공격 선택:</h4>
                 <div class="attack-grid">
                   <button class="attack-btn" data-attack="PHISH_TEST">
-                    <div class="attack-name">PHISH_TEST</div>
-                    <div class="attack-desc">Social Engineering Test</div>
-                    <div class="attack-targets">Targets: CLIENT SIDE</div>
+                    <div class="attack-name">🎣 피싱 테스트</div>
+                    <div class="attack-desc">소셜 엔지니어링 | +10점</div>
+                    <div class="attack-targets">대상: 클라이언트</div>
                   </button>
                   <button class="attack-btn" data-attack="BRUTE_SIM">
-                    <div class="attack-name">BRUTE_SIM</div>
-                    <div class="attack-desc">Authentication Strength</div>
-                    <div class="attack-targets">Targets: CLIENT SIDE</div>
+                    <div class="attack-name">🔨 무차별 대입</div>
+                    <div class="attack-desc">인증 강도 테스트 | +15점</div>
+                    <div class="attack-targets">대상: 클라이언트</div>
                   </button>
                   <button class="attack-btn" data-attack="INJECT_SIM">
-                    <div class="attack-name">INJECT_SIM</div>
-                    <div class="attack-desc">Input Validation Test</div>
-                    <div class="attack-targets">Targets: SERVER SIDE</div>
+                    <div class="attack-name">💉 SQL 인젝션</div>
+                    <div class="attack-desc">DB 보안 테스트 | +20점</div>
+                    <div class="attack-targets">대상: 서버</div>
                   </button>
                   <button class="attack-btn" data-attack="DOS_SIM">
-                    <div class="attack-name">DOS_SIM</div>
-                    <div class="attack-desc">Load Capacity Test</div>
-                    <div class="attack-targets">Targets: SERVER SIDE</div>
+                    <div class="attack-name">💥 DDoS 공격</div>
+                    <div class="attack-desc">서비스 거부 | +18점</div>
+                    <div class="attack-targets">대상: 서버</div>
                   </button>
                   <button class="attack-btn" data-attack="MISCONFIG_SCAN">
-                    <div class="attack-name">MISCONFIG_SCAN</div>
-                    <div class="attack-desc">Configuration Audit</div>
-                    <div class="attack-targets">Targets: ALL SYSTEMS</div>
+                    <div class="attack-name">🔍 설정 스캔</div>
+                    <div class="attack-desc">설정 취약점 | +12점</div>
+                    <div class="attack-targets">대상: 전체</div>
+                  </button>
+                  <button class="attack-btn" data-attack="XSS_ATTACK">
+                    <div class="attack-name">⚡ XSS 공격</div>
+                    <div class="attack-desc">스크립트 삽입 | +17점</div>
+                    <div class="attack-targets">대상: 클라이언트</div>
+                  </button>
+                  <button class="attack-btn" data-attack="CSRF_TEST">
+                    <div class="attack-name">🔄 CSRF 공격</div>
+                    <div class="attack-desc">요청 위조 | +16점</div>
+                    <div class="attack-targets">대상: 클라이언트</div>
+                  </button>
+                  <button class="attack-btn" data-attack="MITM_SCAN">
+                    <div class="attack-name">🕵️ 중간자 공격</div>
+                    <div class="attack-desc">통신 가로채기 | +22점</div>
+                    <div class="attack-targets">대상: 전체</div>
+                  </button>
+                  <button class="attack-btn" data-attack="BUFFER_OVERFLOW">
+                    <div class="attack-name">📦 버퍼 오버플로우</div>
+                    <div class="attack-desc">메모리 공격 | +25점</div>
+                    <div class="attack-targets">대상: 서버</div>
+                  </button>
+                  <button class="attack-btn" data-attack="PRIVILEGE_ESC">
+                    <div class="attack-name">👑 권한 상승</div>
+                    <div class="attack-desc">권한 탈취 | +23점</div>
+                    <div class="attack-targets">대상: 서버</div>
+                  </button>
+                  <button class="attack-btn" data-attack="RANSOMWARE_SIM">
+                    <div class="attack-name">🔒 랜섬웨어</div>
+                    <div class="attack-desc">암호화 공격 | +30점</div>
+                    <div class="attack-targets">대상: 전체</div>
+                  </button>
+                  <button class="attack-btn" data-attack="ZERO_DAY">
+                    <div class="attack-name">💀 제로데이</div>
+                    <div class="attack-desc">알려지지 않은 취약점 | +35점</div>
+                    <div class="attack-targets">대상: 전체</div>
                   </button>
                 </div>
 
                 <div class="vote-status">
-                  <div>ANALYST: <span id="analyst-vote">---</span></div>
-                  <div>ATTACKER: <span id="attacker-vote">---</span></div>
+                  <div>분석가: <span id="analyst-vote">---</span></div>
+                  <div>공격가: <span id="attacker-vote">---</span></div>
                 </div>
               </div>
 
               <!-- Defense Patch Phase -->
               <div id="patch-selection-ui" style="display: none;">
-                <h4>&gt; SELECT DEFENSE PATCH (1 per round):</h4>
+                <h4>&gt; 방어 패치 선택 (라운드당 1개):</h4>
                 <div class="patch-grid">
                   <button class="patch-btn" data-patch="AUTH_HARDENING">
-                    <div class="patch-name">AUTH_HARDENING</div>
-                    <div class="patch-desc">Reduces BRUTE_SIM vulnerability</div>
-                    <div class="patch-duration">Duration: 2 rounds</div>
+                    <div class="patch-name">🔐 인증 강화</div>
+                    <div class="patch-desc">무차별 대입 방어 | +15점</div>
+                    <div class="patch-duration">2 라운드</div>
                   </button>
                   <button class="patch-btn" data-patch="INPUT_VALIDATION">
-                    <div class="patch-name">INPUT_VALIDATION</div>
-                    <div class="patch-desc">Reduces INJECT_SIM vulnerability</div>
-                    <div class="patch-duration">Duration: 2 rounds</div>
+                    <div class="patch-name">✅ 입력 검증</div>
+                    <div class="patch-desc">SQL 인젝션 방어 | +20점</div>
+                    <div class="patch-duration">2 라운드</div>
                   </button>
                   <button class="patch-btn" data-patch="MONITORING_ENHANCE">
-                    <div class="patch-name">MONITORING_ENHANCE</div>
-                    <div class="patch-desc">Enhanced log details</div>
-                    <div class="patch-duration">Duration: 3 rounds</div>
+                    <div class="patch-name">📊 모니터링 강화</div>
+                    <div class="patch-desc">상세 로그 | +12점</div>
+                    <div class="patch-duration">3 라운드</div>
                   </button>
                   <button class="patch-btn" data-patch="NETWORK_STABILIZE">
-                    <div class="patch-name">NETWORK_STABILIZE</div>
-                    <div class="patch-desc">Reduces DOS_SIM vulnerability</div>
-                    <div class="patch-duration">Duration: 2 rounds</div>
+                    <div class="patch-name">🛡️ 네트워크 안정화</div>
+                    <div class="patch-desc">DDoS 방어 | +18점</div>
+                    <div class="patch-duration">2 라운드</div>
+                  </button>
+                  <button class="patch-btn" data-patch="XSS_FILTER">
+                    <div class="patch-name">🧹 XSS 필터</div>
+                    <div class="patch-desc">스크립트 차단 | +17점</div>
+                    <div class="patch-duration">2 라운드</div>
+                  </button>
+                  <button class="patch-btn" data-patch="CSRF_TOKEN">
+                    <div class="patch-name">🎫 CSRF 토큰</div>
+                    <div class="patch-desc">요청 검증 | +16점</div>
+                    <div class="patch-duration">3 라운드</div>
+                  </button>
+                  <button class="patch-btn" data-patch="ENCRYPTION_UPGRADE">
+                    <div class="patch-name">🔒 암호화 업그레이드</div>
+                    <div class="patch-desc">통신 보안 | +22점</div>
+                    <div class="patch-duration">3 라운드</div>
+                  </button>
+                  <button class="patch-btn" data-patch="MEMORY_PROTECTION">
+                    <div class="patch-name">🧱 메모리 보호</div>
+                    <div class="patch-desc">버퍼 오버플로우 방어 | +25점</div>
+                    <div class="patch-duration">2 라운드</div>
+                  </button>
+                  <button class="patch-btn" data-patch="ACCESS_CONTROL">
+                    <div class="patch-name">🚪 접근 제어</div>
+                    <div class="patch-desc">권한 상승 방지 | +23점</div>
+                    <div class="patch-duration">2 라운드</div>
+                  </button>
+                  <button class="patch-btn" data-patch="BACKUP_SYSTEM">
+                    <div class="patch-name">💾 백업 시스템</div>
+                    <div class="patch-desc">랜섬웨어 대비 | +30점</div>
+                    <div class="patch-duration">4 라운드</div>
+                  </button>
+                  <button class="patch-btn" data-patch="FIREWALL_BOOST">
+                    <div class="patch-name">🔥 방화벽 강화</div>
+                    <div class="patch-desc">제로데이 방어 | +28점</div>
+                    <div class="patch-duration">3 라운드</div>
+                  </button>
+                  <button class="patch-btn" data-patch="INTRUSION_DETECTION">
+                    <div class="patch-name">🎯 침입 탐지</div>
+                    <div class="patch-desc">고급 탐지 시스템 | +25점</div>
+                    <div class="patch-duration">4 라운드</div>
                   </button>
                 </div>
               </div>
 
               <div id="waiting-ui">
-                <p class="waiting-text">Waiting for phase to begin...</p>
+                <p class="waiting-text">다음 단계를 기다리는 중...</p>
               </div>
             </div>
           </div>
 
           <div class="panel intel-panel">
-            <div class="panel-header">INTELLIGENCE</div>
+            <div class="panel-header">정보</div>
             <div id="intel-content">
               <div class="intel-item">
-                <strong>Identified Vulnerabilities:</strong>
-                <div id="identified-vulns">None yet</div>
+                <strong>식별된 취약점:</strong>
+                <div id="identified-vulns">아직 없음</div>
               </div>
               <div class="intel-item">
                 <button id="identify-vuln-btn" class="terminal-btn small">
-                  IDENTIFY VULNERABLE MODULE
+                  취약한 모듈 식별하기
                 </button>
               </div>
             </div>
@@ -227,41 +312,41 @@
         <!-- Module View -->
         <div id="module-view" class="view-container" style="display: none;">
           <div class="panel module-status-panel">
-            <div class="panel-header">MODULE: <span id="module-name">UNKNOWN</span></div>
+            <div class="panel-header">모듈: <span id="module-name">알 수 없음</span></div>
             <div class="module-content">
               <div class="status-item">
-                <strong>YOUR SECURITY STATE:</strong>
+                <strong>보안 상태:</strong>
                 <div id="module-security" class="security-indicator">
                   <div class="security-bar">
                     <div class="security-fill" id="security-fill"></div>
                   </div>
-                  <div id="security-text">INITIALIZING...</div>
+                  <div id="security-text">초기화 중...</div>
                 </div>
               </div>
 
               <div class="status-item">
-                <strong>RECENT TEST RESULTS:</strong>
+                <strong>최근 테스트 결과:</strong>
                 <div id="module-response" class="response-log">
-                  No tests executed yet
+                  아직 실행된 테스트 없음
                 </div>
               </div>
 
               <div class="status-item">
-                <strong>ACTIVE PATCHES:</strong>
+                <strong>활성 패치:</strong>
                 <div id="module-patches">
-                  None
+                  없음
                 </div>
               </div>
 
               <div class="status-item waiting-notice">
-                <p>⏳ Waiting for Whitehats to execute security tests...</p>
-                <p class="small-text">You will see your module's response here (private to you)</p>
+                <p>⏳ 화이트햇이 보안 테스트를 실행하기를 기다리는 중...</p>
+                <p class="small-text">이곳에 모듈의 응답이 표시됩니다 (나만 볼 수 있음)</p>
               </div>
             </div>
           </div>
 
           <div class="panel module-log-panel">
-            <div class="panel-header">SYSTEM EVENTS</div>
+            <div class="panel-header">시스템 이벤트</div>
             <div id="module-log" class="log-content"></div>
           </div>
         </div>
@@ -273,13 +358,13 @@
   <div id="gameover-screen" class="screen">
     <div class="terminal-container">
       <div class="terminal-header">
-        <div class="terminal-title">PROTOCOL COMPLETE</div>
+        <div class="terminal-title">프로토콜 완료</div>
       </div>
       <div class="terminal-content">
         <div id="gameover-content" class="gameover-content">
           <div id="gameover-result"></div>
           <div id="gameover-stats"></div>
-          <button id="return-lobby-btn" class="terminal-btn primary">RETURN TO LOBBY</button>
+          <button id="return-lobby-btn" class="terminal-btn primary">로비로 돌아가기</button>
         </div>
       </div>
     </div>

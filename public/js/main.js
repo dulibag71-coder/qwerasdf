@@ -68,7 +68,7 @@ const waitingUI = document.getElementById('waiting-ui');
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
   setupEventListeners();
-  addLogEntry(systemLog, 'System initialized. Connecting to server...', 'info');
+  addLogEntry(systemLog, '시스템 초기화 완료. 서버에 연결 중...', 'info');
 });
 
 // Update connection status in UI
@@ -76,13 +76,13 @@ function updateConnectionStatus(connected) {
   const statusElement = document.querySelector('.connection-status');
   if (statusElement) {
     if (connected) {
-      statusElement.textContent = '[Secure Connection Established]';
+      statusElement.textContent = '[보안 연결 성공]';
       statusElement.style.color = '#00ff41';
-      addLogEntry(systemLog, 'Connected to game server', 'success');
+      addLogEntry(systemLog, '게임 서버에 연결되었습니다', 'success');
     } else {
-      statusElement.textContent = '[Connection Lost - Reconnecting...]';
+      statusElement.textContent = '[연결 끊김 - 재연결 중...]';
       statusElement.style.color = '#ff4444';
-      addLogEntry(systemLog, 'Connection lost. Please refresh the page.', 'error');
+      addLogEntry(systemLog, '연결이 끊어졌습니다. 페이지를 새로고침하세요.', 'error');
     }
   }
 }
@@ -145,28 +145,28 @@ function setupEventListeners() {
 function handleCreateRoom() {
   const name = playerNameInput.value.trim();
   if (!name) {
-    alert('Please enter your callsign');
+    alert('닉네임을 입력해주세요');
     return;
   }
 
   if (!isConnected) {
-    alert('Not connected to server. Please wait or refresh the page.');
+    alert('서버에 연결되지 않았습니다. 잠시 기다리거나 페이지를 새로고침하세요.');
     return;
   }
 
   gameState.playerName = name;
 
-  console.log('📡 Creating room...');
+  console.log('📡 방 생성 중...');
   socket.emit('create-room', (response) => {
-    console.log('📡 Create room response:', response);
+    console.log('📡 방 생성 응답:', response);
     if (response.success) {
       gameState.roomCode = response.roomCode;
       showRoleSelection();
-      addLogEntry(systemLog, `Room created: ${response.roomCode}`, 'info');
-      console.log('✅ Room created:', response.roomCode);
+      addLogEntry(systemLog, `방 생성 완료: ${response.roomCode}`, 'info');
+      console.log('✅ 방 생성 완료:', response.roomCode);
     } else {
-      alert('Failed to create room');
-      console.error('❌ Failed to create room');
+      alert('방 생성에 실패했습니다');
+      console.error('❌ 방 생성 실패');
     }
   });
 }
@@ -177,16 +177,16 @@ function handleJoinRoom() {
   const code = roomCodeInput.value.trim().toUpperCase();
 
   if (!name || !code) {
-    alert('Please enter your callsign and room code');
+    alert('닉네임과 방 코드를 모두 입력해주세요');
     return;
   }
 
   if (!isConnected) {
-    alert('Not connected to server. Please wait or refresh the page.');
+    alert('서버에 연결되지 않았습니다. 잠시 기다리거나 페이지를 새로고침하세요.');
     return;
   }
 
-  console.log('📡 Attempting to join room:', code);
+  console.log('📡 방 참여 시도:', code);
   gameState.playerName = name;
   gameState.roomCode = code;
 
@@ -205,27 +205,35 @@ function showRoleSelection() {
 // Handle Role Selection
 function handleRoleSelection(role) {
   if (!gameState.playerName || !gameState.roomCode) {
-    console.error('❌ Missing player name or room code');
+    console.error('❌ 플레이어 이름 또는 방 코드 누락');
     return;
   }
 
   if (!isConnected) {
-    alert('Not connected to server. Please refresh the page.');
+    alert('서버에 연결되지 않았습니다. 페이지를 새로고침하세요.');
     return;
   }
 
-  console.log('📡 Joining room:', {
+  console.log('📡 방 참여 중:', {
     roomCode: gameState.roomCode,
     playerName: gameState.playerName,
     role: role
   });
+
+  const roleNames = {
+    'analyst': '분석가',
+    'attacker': '공격가',
+    'spectator': '관람자',
+    'client': '클라이언트',
+    'server': '서버'
+  };
 
   socket.emit('join-room', {
     roomCode: gameState.roomCode,
     playerName: gameState.playerName,
     role: role
   }, (response) => {
-    console.log('📡 Join room response:', response);
+    console.log('📡 방 참여 응답:', response);
 
     if (response.success) {
       gameState.playerRole = role;
@@ -237,16 +245,19 @@ function handleRoleSelection(role) {
       });
       document.querySelector(`[data-role="${role}"]`).classList.add('selected');
 
-      addLogEntry(systemLog, `Role selected: ${role.toUpperCase()}`, 'info');
-      console.log('✅ Joined room successfully as', role);
+      addLogEntry(systemLog, `역할 선택 완료: ${roleNames[role] || role}`, 'info');
+      console.log('✅ 방 참여 성공:', roleNames[role] || role);
     } else {
-      const errorMsg = response.error || 'Failed to join room';
-      alert(errorMsg);
-      console.error('❌ Join room failed:', errorMsg);
+      const errorMsg = response.error || '방 참여에 실패했습니다';
+      const errorMsgKR = errorMsg === 'Room not found' ? '방을 찾을 수 없습니다' :
+                         errorMsg === 'Role already taken' ? '이미 선택된 역할입니다' :
+                         errorMsg === 'Room is full' ? '방이 가득 찼습니다' : errorMsg;
+      alert(errorMsgKR);
+      console.error('❌ 방 참여 실패:', errorMsg);
 
       // If room not found, go back to lobby
       if (response.error === 'Room not found') {
-        alert('Room not found. Please check the room code and try again.');
+        alert('방을 찾을 수 없습니다. 방 코드를 확인하고 다시 시도하세요.');
         location.reload();
       }
     }

@@ -309,9 +309,61 @@ body {
   margin-bottom: 20px;
 }
 
-.header-left, .header-right {
+.header-left, .header-right, .header-center {
   display: flex;
   gap: 30px;
+  align-items: center;
+}
+
+.header-center {
+  flex-direction: column;
+  gap: 10px;
+}
+
+.score-display, .combo-display {
+  text-align: center;
+  background: rgba(0, 170, 255, 0.1);
+  border: 2px solid #00aaff;
+  padding: 8px 20px;
+  border-radius: 5px;
+}
+
+.score-label, .combo-label {
+  font-size: 10px;
+  color: #00aaff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.score-value {
+  font-size: 28px;
+  font-weight: bold;
+  color: #00ff41;
+  text-shadow: 0 0 10px #00ff41;
+  animation: pulse 2s infinite;
+}
+
+.combo-display {
+  border-color: #ff4444;
+  background: rgba(255, 68, 68, 0.1);
+  animation: comboGlow 0.5s infinite alternate;
+}
+
+.combo-value {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ff4444;
+  text-shadow: 0 0 10px #ff4444;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes comboGlow {
+  0% { box-shadow: 0 0 5px rgba(255, 68, 68, 0.5); }
+  100% { box-shadow: 0 0 15px rgba(255, 68, 68, 0.8); }
 }
 
 .round-info, .phase-info, .security-meter, .alert-meter {
