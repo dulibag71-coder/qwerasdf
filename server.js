@@ -233,62 +233,95 @@ function resolveAttack(room, attackType) {
 // Calculate security level
 function calculateSecurityLevel(modules) {
   let score = 0;
+  let patchBonus = 0;
+
   Object.values(modules).forEach(module => {
-    if (module.security === 'STRONG') score += 20;
-    else if (module.security === 'NORMAL') score += 10;
+    // 기본 보안 점수 (더 높게 설정)
+    if (module.security === 'STRONG') score += 25;
+    else if (module.security === 'NORMAL') score += 15;
+    else if (module.security === 'WEAK') score += 5; // WEAK도 약간의 점수
+
+    // 패치 보너스 (패치당 +3점)
+    patchBonus += module.patches.length * 3;
   });
-  return Math.round((score / 40) * 100);
+
+  const totalScore = score + patchBonus;
+  const maxScore = 50 + 20; // 기본 50 + 패치 보너스 최대 20
+
+  return Math.min(100, Math.round((totalScore / maxScore) * 100));
 }
 
 // Apply patch
 function applyPatch(room, patchType) {
-  // Logic to determine which module gets the patch
-  // For MVP, apply to the most vulnerable module of relevant type
   const patch = PATCHES[patchType];
+  let improved = false;
 
   Object.values(room.modules).forEach(module => {
-    // Simple logic: apply to weak modules
-    if (module.security === 'WEAK' || module.security === 'NORMAL') {
-      if (!module.patches.includes(patchType)) {
-        module.patches.push(patchType);
+    // 모든 모듈에 패치 적용 (더 효과적!)
+    if (!module.patches.includes(patchType)) {
+      module.patches.push(patchType);
 
-        // Schedule patch removal
-        setTimeout(() => {
-          const index = module.patches.indexOf(patchType);
-          if (index > -1) {
-            module.patches.splice(index, 1);
-          }
-        }, patch.duration * 60000); // Convert rounds to approximate time
+      // 50% 확률로 보안 상태 즉시 업그레이드!
+      const upgradeChance = Math.random();
+      if (upgradeChance < 0.5) {
+        if (module.security === 'WEAK') {
+          module.security = 'NORMAL';
+          improved = true;
+          console.log(`🔧 패치로 ${module.name} 시스템 개선: WEAK → NORMAL`);
+        } else if (module.security === 'NORMAL' && upgradeChance < 0.3) {
+          module.security = 'STRONG';
+          improved = true;
+          console.log(`🔧 패치로 ${module.name} 시스템 개선: NORMAL → STRONG`);
+        }
       }
+
+      // Schedule patch removal
+      setTimeout(() => {
+        const index = module.patches.indexOf(patchType);
+        if (index > -1) {
+          module.patches.splice(index, 1);
+        }
+      }, patch.duration * 60000); // Convert rounds to approximate time
     }
   });
+
+  // 패치 적용 후 보안 레벨 즉시 재계산
+  room.securityLevel = calculateSecurityLevel(room.modules);
+
+  if (improved) {
+    console.log(`✅ 보안 레벨 상승: ${room.securityLevel}%`);
+  }
 }
 
 // Check victory conditions
 function checkVictoryConditions(room) {
-  if (room.identifiedVulnerabilities.length >= 1 &&
-      room.securityLevel >= 70 &&
-      room.alertLevel < 9) {
-    return { victory: true, reason: 'All victory conditions met!' };
+  // 즉시 승리 조건 (게임 중 달성 시 바로 승리)
+  if (room.securityLevel >= 80 && room.identifiedVulnerabilities.length >= 1) {
+    return { victory: true, reason: '🏆 완벽한 승리! 보안 수준 최고!' };
   }
 
+  // 패배 조건 확인
   if (room.alertLevel >= 10) {
-    return { defeat: true, reason: 'Alert level reached MAXIMUM!' };
+    return { defeat: true, reason: '❌ 경보 레벨 최대 도달!' };
   }
 
-  const compromisedModules = Object.values(room.modules).filter(m =>
-    m.lastResponse && m.lastResponse.vulnerable
-  ).length;
-
-  if (compromisedModules >= 2) {
-    return { defeat: true, reason: 'All systems compromised!' };
+  if (room.securityLevel <= 20) {
+    return { defeat: true, reason: '❌ 보안 수준이 너무 낮습니다!' };
   }
 
+  // 8라운드 종료 시 승리/패배 판정
   if (room.round >= room.maxRounds) {
-    if (room.identifiedVulnerabilities.length >= 1 && room.securityLevel >= 70) {
-      return { victory: true, reason: 'Victory conditions met!' };
-    } else {
-      return { defeat: true, reason: 'Round limit reached without victory!' };
+    // 승리 조건 (훨씬 쉬워짐!)
+    if (room.securityLevel >= 40) {
+      return { victory: true, reason: '🎉 승리! 보안 수준 유지 성공!' };
+    }
+    // 보너스 승리 (취약점을 찾았다면 보안 레벨이 낮아도 승리)
+    else if (room.identifiedVulnerabilities.length >= 1 && room.securityLevel >= 30) {
+      return { victory: true, reason: '🎯 승리! 취약점 발견 및 방어 성공!' };
+    }
+    // 패배
+    else {
+      return { defeat: true, reason: `💀 패배! 보안 수준: ${room.securityLevel}% (40% 필요)` };
     }
   }
 
